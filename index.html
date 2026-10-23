@@ -133,8 +133,25 @@
         </footer>
     </div>
 
-    <script>
+   <script>
         let accumulatedSegments = [];
+
+        // 1. 从本地存储加载历史数据
+        function loadFromStorage() {
+            const saved = localStorage.getItem('time_calculator_segments');
+            if (saved) {
+                try {
+                    accumulatedSegments = JSON.parse(saved);
+                } catch (e) {
+                    accumulatedSegments = [];
+                }
+            }
+        }
+
+        // 2. 将数据保存到本地存储
+        function saveToStorage() {
+            localStorage.setItem('time_calculator_segments', JSON.stringify(accumulatedSegments));
+        }
 
         function calculate() {
             const startVal = document.getElementById('startTime').value;
@@ -196,6 +213,7 @@
             if (!res) return;
 
             accumulatedSegments.push(res);
+            saveToStorage(); // 保存到本地
             renderAccumulator();
         }
 
@@ -234,15 +252,22 @@
 
         function removeAccumulator(index) {
             accumulatedSegments.splice(index, 1);
+            saveToStorage(); // 保存到本地
             renderAccumulator();
         }
 
         function clearAccumulator() {
             accumulatedSegments = [];
+            saveToStorage(); // 保存到本地
             renderAccumulator();
         }
 
-        window.onload = calculate;
+        // 页面初始化：读取历史数据并渲染
+        window.onload = function() {
+            loadFromStorage();
+            calculate();
+            renderAccumulator();
+        };
     </script>
 </body>
 </html>
