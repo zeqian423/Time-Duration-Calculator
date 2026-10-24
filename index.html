@@ -12,165 +12,179 @@
         body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
-    <div class="container mx-auto px-4 py-8 max-w-5xl">
-        <header class="text-center mb-8">
-            <div class="inline-flex items-center justify-center p-3 bg-indigo-600 text-white rounded-2xl shadow-lg shadow-indigo-200 mb-4">
-                <i class="fa-solid font-bold fa-clock text-3xl"></i>
+<body class="bg-slate-50 text-slate-800 min-h-screen xl:h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white p-4 xl:p-6 overflow-x-hidden">
+    <div class="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-between">
+        <!-- 头部导航 -->
+        <header class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200/60">
+            <div class="flex items-center gap-3">
+                <div class="inline-flex items-center justify-center p-2 bg-indigo-600 text-white rounded-xl shadow-md shadow-indigo-100">
+                    <i class="fa-solid fa-clock text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 tracking-tight">时间间隔计算器 & 时差换算</h1>
+                    <p class="text-slate-500 text-xs">一站式时间差计算、跨国时差换算与多工时累加小工具</p>
+                </div>
             </div>
-            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">时间间隔计算器与时差换算</h1>
-            <p class="text-slate-500 mt-2 text-sm">快速计算时间差、多段工时累加，支持跨国时差互相换算</p>
         </header>
 
-        <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <!-- 左侧：计算与累计模块 -->
-            <div class="lg:col-span-7 space-y-6">
-                <!-- 单次计算 -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
-                    <div class="flex items-center justify-between mb-5">
-                        <h2 class="text-base font-semibold text-slate-800 flex items-center gap-2">
+        <!-- 主体仪表盘一屏布局 -->
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 my-auto">
+            
+            <!-- 第一列：单次计算 + 时差换算 (占据 5 列) -->
+            <div class="lg:col-span-5 space-y-4">
+                <!-- 单次时间段计算 -->
+                <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/80">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-sm font-semibold text-slate-800 flex items-center gap-2">
                             <i class="fa-solid fa-hourglass-start text-indigo-500"></i> 单次时间段计算
                         </h2>
-                        <div class="flex gap-2">
-                            <button onclick="setPreset('16:50', '18:40')" class="px-2.5 py-1 text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors">
+                        <div class="flex gap-1.5">
+                            <button onclick="setPreset('16:50', '18:40')" class="px-2 py-0.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-md transition-colors">
                                 示例 (16:50-18:40)
                             </button>
-                            <button onclick="setCurrentTime()" class="px-2.5 py-1 text-xs font-medium bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-lg transition-colors">
+                            <button onclick="setCurrentTime()" class="px-2 py-0.5 text-xs font-medium bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-md transition-colors">
                                 填入当前时间
                             </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1.5">开始时间 (HH:mm)</label>
-                            <input type="time" id="startTime" value="16:50" onchange="calculate()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-mono text-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
+                            <label class="block text-xs font-medium text-slate-500 mb-1">开始时间 (HH:mm)</label>
+                            <input type="time" id="startTime" value="16:50" onchange="calculate()" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg font-mono text-base text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1.5">结束时间 (HH:mm)</label>
-                            <input type="time" id="endTime" value="18:40" onchange="calculate()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-mono text-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
+                            <label class="block text-xs font-medium text-slate-500 mb-1">结束时间 (HH:mm)</label>
+                            <input type="time" id="endTime" value="18:40" onchange="calculate()" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg font-mono text-base text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                         </div>
                     </div>
 
-                    <div class="mt-4 flex items-center justify-between pt-2">
+                    <div class="mt-3 flex items-center justify-between">
                         <label class="inline-flex items-center cursor-pointer select-none">
                             <input type="checkbox" id="forceOvernight" onchange="calculate()" class="sr-only peer">
-                            <div class="relative w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
-                            <span class="ms-2.5 text-xs font-medium text-slate-600">强制按跨天计算 (+24小时)</span>
+                            <div class="relative w-8 h-4 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-indigo-600"></div>
+                            <span class="ms-2 text-xs font-medium text-slate-600">强制跨天 (+24h)</span>
                         </label>
-                        <span id="overnightBadge" class="hidden text-xs px-2 py-0.5 rounded-md bg-amber-50 text-amber-600 font-medium border border-amber-200/60">
-                            已自动识别为跨天
+                        <span id="overnightBadge" class="hidden text-xs px-2 py-0.5 rounded bg-amber-50 text-amber-600 font-medium border border-amber-200/60">
+                            已识别跨天
                         </span>
                     </div>
 
-                    <div class="mt-6 pt-5 border-t border-slate-100 flex gap-3">
-                        <button onclick="calculate()" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl shadow-md shadow-indigo-100 transition-all text-sm flex items-center justify-center gap-2">
+                    <div class="mt-3 pt-3 border-t border-slate-100 flex gap-2">
+                        <button onclick="calculate()" class="flex-1 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-sm shadow-indigo-100 transition-all text-xs flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-calculator"></i> 计算时间差
                         </button>
-                        <button onclick="addToAccumulator()" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-xl transition-all text-sm flex items-center justify-center gap-2">
+                        <button onclick="addToAccumulator()" class="px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-lg transition-all text-xs flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-plus"></i> 加入汇总
                         </button>
                     </div>
                 </div>
 
-                <!-- 跨国时差换算模块 -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
-                    <h2 class="text-base font-semibold text-slate-800 flex items-center gap-2 mb-4">
+                <!-- 跨国时差换算 -->
+                <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/80">
+                    <h2 class="text-sm font-semibold text-slate-800 flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-earth-asia text-indigo-500"></i> 跨国时差换算
                     </h2>
                     
-                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
-                        <div class="sm:col-span-5 space-y-2">
-                            <label class="block text-xs font-medium text-slate-500">源时区 / 时间</label>
-                            <select id="sourceZone" onchange="convertTimeZone()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
-                                <option value="Asia/Shanghai" selected>中国北京时间 (UTC+8)</option>
+                    <div class="grid grid-cols-12 gap-2 items-center">
+                        <div class="col-span-5 space-y-1">
+                            <label class="block text-[11px] font-medium text-slate-400">源时区 / 时间</label>
+                            <select id="sourceZone" onchange="convertTimeZone()" class="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none">
+                                <option value="Asia/Shanghai" selected>中国北京 (UTC+8)</option>
                                 <option value="Europe/Moscow">俄罗斯莫斯科 (UTC+3)</option>
                                 <option value="Europe/London">英国伦敦 (UTC+0/1)</option>
                                 <option value="America/New_York">美国纽约 (UTC-5/4)</option>
                                 <option value="Asia/Tokyo">日本东京 (UTC+9)</option>
                             </select>
-                            <input type="time" id="sourceTime" value="12:00" onchange="convertTimeZone()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-mono text-sm text-slate-800 focus:outline-none">
+                            <input type="time" id="sourceTime" value="12:00" onchange="convertTimeZone()" class="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg font-mono text-xs text-slate-800 focus:outline-none">
                         </div>
 
-                        <div class="sm:col-span-2 flex justify-center pt-5">
-                            <button onclick="swapTimeZones()" title="对调时区" class="p-3 bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 rounded-full transition-colors shadow-sm">
-                                <i class="fa-solid fa-right-left"></i>
+                        <div class="col-span-2 flex justify-center pt-3">
+                            <button onclick="swapTimeZones()" title="对调时区" class="p-2 bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 rounded-full transition-colors">
+                                <i class="fa-solid fa-right-left text-xs"></i>
                             </button>
                         </div>
 
-                        <div class="sm:col-span-5 space-y-2">
-                            <label class="block text-xs font-medium text-slate-500">目标时区 / 结果</label>
-                            <select id="targetZone" onchange="convertTimeZone()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
-                                <option value="Asia/Shanghai">中国北京时间 (UTC+8)</option>
+                        <div class="col-span-5 space-y-1">
+                            <label class="block text-[11px] font-medium text-slate-400">目标时区 / 结果</label>
+                            <select id="targetZone" onchange="convertTimeZone()" class="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none">
+                                <option value="Asia/Shanghai">中国北京 (UTC+8)</option>
                                 <option value="Europe/Moscow" selected>俄罗斯莫斯科 (UTC+3)</option>
                                 <option value="Europe/London">英国伦敦 (UTC+0/1)</option>
                                 <option value="America/New_York">美国纽约 (UTC-5/4)</option>
                                 <option value="Asia/Tokyo">日本东京 (UTC+9)</option>
                             </select>
-                            <div id="targetResultBox" class="w-full px-3 py-2 bg-indigo-50/60 border border-indigo-100 rounded-xl font-mono text-sm font-bold text-indigo-700 flex items-center justify-between">
+                            <div id="targetResultBox" class="w-full px-2 py-1 bg-indigo-50/60 border border-indigo-100 rounded-lg font-mono text-xs font-bold text-indigo-700 flex items-center justify-between">
                                 <span id="targetTimeText">07:00</span>
-                                <span id="targetDayDiff" class="text-xs font-normal text-indigo-500">同天</span>
+                                <span id="targetDayDiff" class="text-[10px] font-normal text-indigo-500">同天</span>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- 历史累计明细 -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-base font-semibold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-indigo-500"></i> 多段时间累计明细（自动持久化）
-                        </h2>
-                        <button onclick="clearAccumulator()" class="text-xs text-rose-500 hover:text-rose-600 font-medium">
-                            清空明细
-                        </button>
-                    </div>
+            <!-- 第二列：计算结果展示 (占据 3 列) -->
+            <div class="lg:col-span-3 flex">
+                <div class="bg-indigo-900 text-white rounded-xl p-5 shadow-lg relative overflow-hidden flex-1 flex flex-col justify-between">
+                    <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-indigo-700/30 rounded-full blur-xl"></div>
                     
-                    <div id="accumulatorList" class="space-y-2 max-h-48 overflow-y-auto pr-1">
-                        <p class="text-xs text-slate-400 text-center py-4">暂无加入的时间段记录</p>
+                    <div>
+                        <span class="text-[11px] font-semibold tracking-wider text-indigo-300 uppercase">计算结果</span>
+                        <div class="mt-3">
+                            <div class="text-xs text-indigo-200 mb-1">相差总分钟数</div>
+                            <div class="flex items-baseline gap-1.5">
+                                <span id="resTotalMinutes" class="text-4xl font-extrabold tracking-tight font-mono text-white">110</span>
+                                <span class="text-xs text-indigo-200 font-medium">分钟</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center text-sm font-semibold text-slate-800">
+                    <div class="space-y-3 pt-4 border-t border-indigo-800/80 my-auto">
+                        <div>
+                            <div class="text-[11px] text-indigo-300">标准工时格式</div>
+                            <div id="resHoursMinutes" class="text-base font-semibold font-mono text-white">1 小时 50 分</div>
+                        </div>
+                        <div>
+                            <div class="text-[11px] text-indigo-300">折算浮点小时</div>
+                            <div id="resDecimalHours" class="text-base font-semibold font-mono text-white">1.83 小时</div>
+                        </div>
+                        <div>
+                            <div class="text-[11px] text-indigo-300">相差总秒数</div>
+                            <div id="resTotalSeconds" class="text-sm font-semibold font-mono text-indigo-100">6,600 秒</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第三列：多段时间累计明细 (占据 4 列) -->
+            <div class="lg:col-span-4 flex">
+                <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200/80 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-sm font-semibold text-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-indigo-500"></i> 多段累计明细
+                            </h2>
+                            <button onclick="clearAccumulator()" class="text-[11px] text-rose-500 hover:text-rose-600 font-medium">
+                                清空明细
+                            </button>
+                        </div>
+                        
+                        <div id="accumulatorList" class="space-y-1.5 max-h-[220px] overflow-y-auto pr-1">
+                            <p class="text-xs text-slate-400 text-center py-8">暂无加入的时间段记录</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 pt-3 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-slate-800">
                         <span>累计总时长：</span>
-                        <span id="totalAccumulatedText" class="text-indigo-600 font-mono text-base">0 小时 0 分钟 (0 分钟)</span>
+                        <span id="totalAccumulatedText" class="text-indigo-600 font-mono text-sm">0 小时 0 分钟 (0 分钟)</span>
                     </div>
                 </div>
             </div>
 
-            <!-- 右侧：计算结果展示 -->
-            <div class="lg:col-span-5 space-y-4">
-                <div class="bg-indigo-900 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden">
-                    <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-indigo-700/30 rounded-full blur-2xl"></div>
-                    
-                    <span class="text-xs font-semibold tracking-wider text-indigo-300 uppercase">计算结果</span>
-                    
-                    <div class="mt-4 mb-6">
-                        <div class="text-xs text-indigo-200 mb-1">相差总分钟数</div>
-                        <div class="flex items-baseline gap-2">
-                            <span id="resTotalMinutes" class="text-5xl font-extrabold tracking-tight font-mono text-white">110</span>
-                            <span class="text-indigo-200 font-medium">分钟</span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4 pt-4 border-t border-indigo-800/80">
-                        <div>
-                            <div class="text-xs text-indigo-300 mb-1">标准工时格式</div>
-                            <div id="resHoursMinutes" class="text-lg font-semibold font-mono text-white">1 小时 50 分</div>
-                        </div>
-                        <div>
-                            <div class="text-xs text-indigo-300 mb-1">折算浮点小时</div>
-                            <div id="resDecimalHours" class="text-lg font-semibold font-mono text-white">1.83 小时</div>
-                        </div>
-                        <div class="col-span-2 pt-2 border-t border-indigo-800/40">
-                            <div class="text-xs text-indigo-300 mb-1">相差总秒数</div>
-                            <div id="resTotalSeconds" class="text-base font-semibold font-mono text-indigo-100">6,600 秒</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </main>
 
-        <footer class="mt-12 text-center text-xs text-slate-400">
+        <!-- 页脚 -->
+        <footer class="text-center text-[11px] text-slate-400 pt-3 border-t border-slate-200/40 mt-4">
             <p>时间间隔计算器 &copy; 2026</p>
         </footer>
     </div>
@@ -178,7 +192,7 @@
     <script>
         let accumulatedSegments = [];
 
-        // 本地存储加载
+        // 从本地存储读取
         function loadFromStorage() {
             const saved = localStorage.getItem('time_calculator_segments');
             if (saved) {
@@ -186,7 +200,7 @@
             }
         }
 
-        // 本地存储保存
+        // 保存到本地存储
         function saveToStorage() {
             localStorage.setItem('time_calculator_segments', JSON.stringify(accumulatedSegments));
         }
@@ -256,7 +270,7 @@
         function renderAccumulator() {
             const container = document.getElementById('accumulatorList');
             if (accumulatedSegments.length === 0) {
-                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">暂无加入的时间段记录</p>';
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-8">暂无加入的时间段记录</p>';
                 document.getElementById('totalAccumulatedText').innerText = '0 小时 0 分钟 (0 分钟)';
                 return;
             }
@@ -267,10 +281,10 @@
             accumulatedSegments.forEach((item, index) => {
                 totalMins += item.diffMinutes;
                 html += `
-                    <div class="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-xl text-xs">
+                    <div class="flex items-center justify-between bg-slate-50 px-2.5 py-1.5 rounded-lg text-xs">
                         <span class="font-mono text-slate-700">${item.startVal} ~ ${item.endVal}</span>
-                        <div class="flex items-center gap-3">
-                            <span class="font-medium text-indigo-600 font-mono">+${item.diffMinutes} 分钟 (${item.hours}h ${item.mins}m)</span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-medium text-indigo-600 font-mono">+${item.diffMinutes}m (${item.hours}h${item.mins}m)</span>
                             <button onclick="removeAccumulator(${index})" class="text-slate-400 hover:text-rose-500">
                                 <i class="fa-solid fa-xmark"></i>
                             </button>
@@ -298,7 +312,7 @@
             renderAccumulator();
         }
 
-        // 时差转换逻辑
+        // 时差换算
         function convertTimeZone() {
             const sourceZone = document.getElementById('sourceZone').value;
             const targetZone = document.getElementById('targetZone').value;
@@ -307,57 +321,32 @@
             if (!sourceTimeStr) return;
 
             const [hours, minutes] = sourceTimeStr.split(':').map(Number);
-            const now = new Date();
+            const d = new Date();
 
-            // 构造源时区的 UTC 时间
-            const sourceDateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`;
-            
-            try {
-                // 利用 Intl API 获取目标时区对应的时间
-                const formatter = new Intl.DateTimeFormat('en-CA', {
-                    timeZone: sourceZone,
-                    year: 'numeric', month: '2-digit', day: '2-digit',
-                    hour: '2-digit', minute: '2-digit', second: '2-digit',
-                    hour12: false
-                });
+            const getOffsetMinutes = (zone, date) => {
+                const utcDate = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
+                const tzDate = new Date(date.toLocaleString('en-US', { timeZone: zone }));
+                return (tzDate - utcDate) / 60000;
+            };
 
-                // 反推绝对时间戳
-                const targetFormatter = new Intl.DateTimeFormat('en-GB', {
-                    timeZone: targetZone,
-                    hour: '2-digit', minute: '2-digit',
-                    hour12: false,
-                    year: 'numeric', month: 'numeric', day: 'numeric'
-                });
+            const offsetDiff = getOffsetMinutes(targetZone, d) - getOffsetMinutes(sourceZone, d);
+            let totalTargetMins = hours * 60 + minutes + offsetDiff;
 
-                // 简化方案：计算两地当前偏移量差
-                const d = new Date();
-                const getOffsetMinutes = (zone, date) => {
-                    const utcDate = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
-                    const tzDate = new Date(date.toLocaleString('en-US', { timeZone: zone }));
-                    return (tzDate - utcDate) / 60000;
-                };
-
-                const offsetDiff = getOffsetMinutes(targetZone, d) - getOffsetMinutes(sourceZone, d);
-                let totalTargetMins = hours * 60 + minutes + offsetDiff;
-
-                let dayDiffText = "同天";
-                if (totalTargetMins >= 24 * 60) {
-                    totalTargetMins -= 24 * 60;
-                    dayDiffText = "次日";
-                } else if (totalTargetMins < 0) {
-                    totalTargetMins += 24 * 60;
-                    dayDiffText = "前一天";
-                }
-
-                const targetH = Math.floor(totalTargetMins / 60) % 24;
-                const targetM = totalTargetMins % 60;
-                const formattedTarget = `${String(targetH).padStart(2, '0')}:${String(targetM).padStart(2, '0')}`;
-
-                document.getElementById('targetTimeText').innerText = formattedTarget;
-                document.getElementById('targetDayDiff').innerText = dayDiffText;
-            } catch (e) {
-                console.error(e);
+            let dayDiffText = "同天";
+            if (totalTargetMins >= 24 * 60) {
+                totalTargetMins -= 24 * 60;
+                dayDiffText = "次日";
+            } else if (totalTargetMins < 0) {
+                totalTargetMins += 24 * 60;
+                dayDiffText = "前一天";
             }
+
+            const targetH = Math.floor(totalTargetMins / 60) % 24;
+            const targetM = totalTargetMins % 60;
+            const formattedTarget = `${String(targetH).padStart(2, '0')}:${String(targetM).padStart(2, '0')}`;
+
+            document.getElementById('targetTimeText').innerText = formattedTarget;
+            document.getElementById('targetDayDiff').innerText = dayDiffText;
         }
 
         function swapTimeZones() {
@@ -369,13 +358,12 @@
             convertTimeZone();
         }
 
-        // 页面初始化
+        // 初始化
         window.onload = function() {
             loadFromStorage();
             calculate();
             renderAccumulator();
             
-            // 初始化设为当前时区时间
             const now = new Date();
             document.getElementById('sourceTime').value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
             convertTimeZone();
