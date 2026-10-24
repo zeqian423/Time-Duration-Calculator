@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>时间间隔计算器</title>
+    <title>时间间隔计算器与时差换算</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -18,12 +18,14 @@
             <div class="inline-flex items-center justify-center p-3 bg-indigo-600 text-white rounded-2xl shadow-lg shadow-indigo-200 mb-4">
                 <i class="fa-solid font-bold fa-clock text-3xl"></i>
             </div>
-            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">时间间隔计算器</h1>
-            <p class="text-slate-500 mt-2 text-sm">快速计算两个时刻之间的时长，支持跨天识别与多段累加</p>
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">时间间隔计算器与时差换算</h1>
+            <p class="text-slate-500 mt-2 text-sm">快速计算时间差、多段工时累加，支持跨国时差互相换算</p>
         </header>
 
         <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- 左侧：计算与累计模块 -->
             <div class="lg:col-span-7 space-y-6">
+                <!-- 单次计算 -->
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
                     <div class="flex items-center justify-between mb-5">
                         <h2 class="text-base font-semibold text-slate-800 flex items-center gap-2">
@@ -42,15 +44,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1.5">开始时间 (HH:mm)</label>
-                            <div class="relative">
-                                <input type="time" id="startTime" value="16:50" onchange="calculate()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-mono text-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
-                            </div>
+                            <input type="time" id="startTime" value="16:50" onchange="calculate()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-mono text-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1.5">结束时间 (HH:mm)</label>
-                            <div class="relative">
-                                <input type="time" id="endTime" value="18:40" onchange="calculate()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-mono text-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
-                            </div>
+                            <input type="time" id="endTime" value="18:40" onchange="calculate()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-mono text-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                         </div>
                     </div>
 
@@ -75,10 +73,53 @@
                     </div>
                 </div>
 
+                <!-- 跨国时差换算模块 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
+                    <h2 class="text-base font-semibold text-slate-800 flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-earth-asia text-indigo-500"></i> 跨国时差换算
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                        <div class="sm:col-span-5 space-y-2">
+                            <label class="block text-xs font-medium text-slate-500">源时区 / 时间</label>
+                            <select id="sourceZone" onchange="convertTimeZone()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                <option value="Asia/Shanghai" selected>中国北京时间 (UTC+8)</option>
+                                <option value="Europe/Moscow">俄罗斯莫斯科 (UTC+3)</option>
+                                <option value="Europe/London">英国伦敦 (UTC+0/1)</option>
+                                <option value="America/New_York">美国纽约 (UTC-5/4)</option>
+                                <option value="Asia/Tokyo">日本东京 (UTC+9)</option>
+                            </select>
+                            <input type="time" id="sourceTime" value="12:00" onchange="convertTimeZone()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-mono text-sm text-slate-800 focus:outline-none">
+                        </div>
+
+                        <div class="sm:col-span-2 flex justify-center pt-5">
+                            <button onclick="swapTimeZones()" title="对调时区" class="p-3 bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 rounded-full transition-colors shadow-sm">
+                                <i class="fa-solid fa-right-left"></i>
+                            </button>
+                        </div>
+
+                        <div class="sm:col-span-5 space-y-2">
+                            <label class="block text-xs font-medium text-slate-500">目标时区 / 结果</label>
+                            <select id="targetZone" onchange="convertTimeZone()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                <option value="Asia/Shanghai">中国北京时间 (UTC+8)</option>
+                                <option value="Europe/Moscow" selected>俄罗斯莫斯科 (UTC+3)</option>
+                                <option value="Europe/London">英国伦敦 (UTC+0/1)</option>
+                                <option value="America/New_York">美国纽约 (UTC-5/4)</option>
+                                <option value="Asia/Tokyo">日本东京 (UTC+9)</option>
+                            </select>
+                            <div id="targetResultBox" class="w-full px-3 py-2 bg-indigo-50/60 border border-indigo-100 rounded-xl font-mono text-sm font-bold text-indigo-700 flex items-center justify-between">
+                                <span id="targetTimeText">07:00</span>
+                                <span id="targetDayDiff" class="text-xs font-normal text-indigo-500">同天</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 历史累计明细 -->
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-base font-semibold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-indigo-500"></i> 多段时间累计明细
+                            <i class="fa-solid fa-list-check text-indigo-500"></i> 多段时间累计明细（自动持久化）
                         </h2>
                         <button onclick="clearAccumulator()" class="text-xs text-rose-500 hover:text-rose-600 font-medium">
                             清空明细
@@ -96,6 +137,7 @@
                 </div>
             </div>
 
+            <!-- 右侧：计算结果展示 -->
             <div class="lg:col-span-5 space-y-4">
                 <div class="bg-indigo-900 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden">
                     <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-indigo-700/30 rounded-full blur-2xl"></div>
@@ -133,22 +175,18 @@
         </footer>
     </div>
 
-   <script>
+    <script>
         let accumulatedSegments = [];
 
-        // 1. 从本地存储加载历史数据
+        // 本地存储加载
         function loadFromStorage() {
             const saved = localStorage.getItem('time_calculator_segments');
             if (saved) {
-                try {
-                    accumulatedSegments = JSON.parse(saved);
-                } catch (e) {
-                    accumulatedSegments = [];
-                }
+                try { accumulatedSegments = JSON.parse(saved); } catch (e) { accumulatedSegments = []; }
             }
         }
 
-        // 2. 将数据保存到本地存储
+        // 本地存储保存
         function saveToStorage() {
             localStorage.setItem('time_calculator_segments', JSON.stringify(accumulatedSegments));
         }
@@ -166,10 +204,8 @@
             let startMinutes = h1 * 60 + m1;
             let endMinutes = h2 * 60 + m2;
 
-            let isAutoOvernight = false;
             if (endMinutes < startMinutes || forceOvernight) {
                 endMinutes += 24 * 60;
-                if (endMinutes < startMinutes) isAutoOvernight = true;
             }
 
             const diffMinutes = endMinutes - startMinutes;
@@ -213,7 +249,7 @@
             if (!res) return;
 
             accumulatedSegments.push(res);
-            saveToStorage(); // 保存到本地
+            saveToStorage();
             renderAccumulator();
         }
 
@@ -252,21 +288,97 @@
 
         function removeAccumulator(index) {
             accumulatedSegments.splice(index, 1);
-            saveToStorage(); // 保存到本地
+            saveToStorage();
             renderAccumulator();
         }
 
         function clearAccumulator() {
             accumulatedSegments = [];
-            saveToStorage(); // 保存到本地
+            saveToStorage();
             renderAccumulator();
         }
 
-        // 页面初始化：读取历史数据并渲染
+        // 时差转换逻辑
+        function convertTimeZone() {
+            const sourceZone = document.getElementById('sourceZone').value;
+            const targetZone = document.getElementById('targetZone').value;
+            const sourceTimeStr = document.getElementById('sourceTime').value;
+
+            if (!sourceTimeStr) return;
+
+            const [hours, minutes] = sourceTimeStr.split(':').map(Number);
+            const now = new Date();
+
+            // 构造源时区的 UTC 时间
+            const sourceDateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`;
+            
+            try {
+                // 利用 Intl API 获取目标时区对应的时间
+                const formatter = new Intl.DateTimeFormat('en-CA', {
+                    timeZone: sourceZone,
+                    year: 'numeric', month: '2-digit', day: '2-digit',
+                    hour: '2-digit', minute: '2-digit', second: '2-digit',
+                    hour12: false
+                });
+
+                // 反推绝对时间戳
+                const targetFormatter = new Intl.DateTimeFormat('en-GB', {
+                    timeZone: targetZone,
+                    hour: '2-digit', minute: '2-digit',
+                    hour12: false,
+                    year: 'numeric', month: 'numeric', day: 'numeric'
+                });
+
+                // 简化方案：计算两地当前偏移量差
+                const d = new Date();
+                const getOffsetMinutes = (zone, date) => {
+                    const utcDate = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
+                    const tzDate = new Date(date.toLocaleString('en-US', { timeZone: zone }));
+                    return (tzDate - utcDate) / 60000;
+                };
+
+                const offsetDiff = getOffsetMinutes(targetZone, d) - getOffsetMinutes(sourceZone, d);
+                let totalTargetMins = hours * 60 + minutes + offsetDiff;
+
+                let dayDiffText = "同天";
+                if (totalTargetMins >= 24 * 60) {
+                    totalTargetMins -= 24 * 60;
+                    dayDiffText = "次日";
+                } else if (totalTargetMins < 0) {
+                    totalTargetMins += 24 * 60;
+                    dayDiffText = "前一天";
+                }
+
+                const targetH = Math.floor(totalTargetMins / 60) % 24;
+                const targetM = totalTargetMins % 60;
+                const formattedTarget = `${String(targetH).padStart(2, '0')}:${String(targetM).padStart(2, '0')}`;
+
+                document.getElementById('targetTimeText').innerText = formattedTarget;
+                document.getElementById('targetDayDiff').innerText = dayDiffText;
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function swapTimeZones() {
+            const sZone = document.getElementById('sourceZone');
+            const tZone = document.getElementById('targetZone');
+            const temp = sZone.value;
+            sZone.value = tZone.value;
+            tZone.value = temp;
+            convertTimeZone();
+        }
+
+        // 页面初始化
         window.onload = function() {
             loadFromStorage();
             calculate();
             renderAccumulator();
+            
+            // 初始化设为当前时区时间
+            const now = new Date();
+            document.getElementById('sourceTime').value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            convertTimeZone();
         };
     </script>
 </body>
